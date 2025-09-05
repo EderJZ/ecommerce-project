@@ -1,0 +1,109 @@
+body .container {
+  width: 450px; /* Garante que o container tenha 450px de largura, sobrescrevendo qualquer width: 100% */
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.15); /* Fundo branco semi-transparente */
+  backdrop-filter: blur(10px); /* Efeito de desfoque no fundo */
+  border: 2px solid rgba(255, 255, 255, 0.2); /* Borda branca semi-transparente */
+  border-radius: 10px; /* Bordas arredondadas */
+  padding: 40px; /* Espaçamento interno */
+}
+
+.container h1 {
+  text-align: center; /* Centraliza o título */
+  font-size: 30px; /* Tamanho da fonte */
+  color: #ffff; /* Cor do texto (branco) */
+}
+
+.container .input-field {
+  position: relative; /* Para poder posicionar ícones dentro do campo */
+  width: 100%; /* Campo ocupa toda a largura do container */
+  height: 50px; /* Altura fixa do campo */
+  margin: 30px auto; /* Espaçamento entre campos, centralizado */
+}
+
+.input-field input {
+  width: 100%; /* Input ocupa toda a largura do campo */
+  height: 100%; /* Input ocupa toda a altura do campo */
+  background: transparent; /* Fundo transparente */
+  outline: none; /* Remove a borda azul padrão do foco */
+  border: 2px solid rgba(255, 255, 255, 0.2); /* Borda branca semi-transparente */
+  border-radius: 40px; /* Bordas arredondadas (pílula) */
+  font-size: 16px; /* Tamanho do texto */
+  color: #fff; /* Texto branco */
+  padding: 20px 45px 20px 25px; /* Espaçamento interno (extra à direita p/ ícone) */
+}
+
+.input-field input::placeholder {
+  color: #fff; /* Placeholder branco */
+}
+
+.input-field .icon {
+  position: absolute; /* Posiciona o ícone dentro do campo */
+  right: 25px; /* Distância da borda direita */
+  top: 50%; /* Centraliza verticalmente */
+  transform: translateY(-50%); /* Ajusta o ícone para ficar alinhado */
+  font-size: 16px; /* Tamanho do ícone */
+  color: #fff; /* Cor branca */
+}
+
+.container .recall-forget {
+  display: flex; /* Coloca os itens lado a lado */
+  justify-content: space-between; /* Espaço máximo entre eles */
+  font-size: 14.5px; /* Texto menor */
+  margin: -15px 0 15px; /* Espaçamento (topo negativo p/ subir) */
+}
+
+.recall-forget label input {
+  accent-color: #fff; /* Cor do checkbox */
+  margin-right: 4px; /* Espaço entre checkbox e o texto */
+}
+
+.recall-forget a {
+  color: #fff; /* Link branco */
+  text-decoration: none; /* Remove sublinhado */
+}
+
+.recall-forget a:hover {
+  text-decoration: underline; /* Sublinha ao passar o mouse */
+}
+
+.container button {
+  width: 100%; /* Botão ocupa toda a largura do container */
+  height: 45px; /* Altura fixa */
+  background: #fff; /* Fundo branco */
+  border: none; /* Remove borda */
+  outline: none; /* Remove outline de foco */
+  border-radius: 40px; /* Bordas arredondadas (pílula) */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra leve */
+  cursor: pointer; /* Cursor de clique */
+  font-size: 16px; /* Tamanho da fonte */
+  color: #333; /* Texto cinza escuro */
+  font-weight: 700; /* Negrito */
+  text-shadow: none; /* Sem sombra no texto */
+}
+
+.container button:hover {
+  text-decoration: underline; /* Sublinha no hover */
+  color: white; /* Texto branco */
+  background: rgb(136, 136, 136); /* Fundo cinza no hover */
+  transition: transform 1s; /* Suaviza a animação */
+  transform: translateX(0) scale(1.1); /* Efeito de zoom no hover */
+}
+
+.container .signup-link {
+  font-size: 14.5px; /* Texto menor */
+  text-align: center; /* Centraliza o texto */
+  margin: 20px 0 15px; /* Espaçamento */
+}
+
+.signup-link p a {
+  color: #fff; /* Link branco */
+  text-decoration: none; /* Sem sublinhado */
+  font-weight: 600; /* Negrito */
+}
+
+.signup-link p a:hover {
+  text-decoration: underline; /* Sublinha no hover */
+}
