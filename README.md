@@ -26,4 +26,8 @@ Projeto de e-commerce simples para fins de aprendizado e portfólio. Implementa:
 
 ---
 
+<<<<<<< HEAD
 ## Estrutura do repositório
+=======
+## Estrutura do repositório
+>>>>>>> 3f617db1 (Login e back)

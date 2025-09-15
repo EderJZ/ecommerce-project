@@ -3,17 +3,43 @@ import { FaUser, FaLock } from "react-icons/fa";
 import "./Login.css";
 
 const Login = () => {
-  // Estados para armazenar as entradas do usuário
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState(""); // Para feedback ao usuário
 
-  // Função que é chamada quando o formulário é enviado
-  const handleSubmit = (event) => {
-    // Impede que a página seja recarregada
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Faz o console log das credenciais do usuário
-    console.log("Dados de Login:", { username, password });
+    try {
+      const response = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: username,
+          senha: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(data.erro || "Erro no login");
+      } else {
+        setMessage("✅ Login realizado com sucesso!");
+        console.log("Usuário logado:", data.usuario);
+
+        // Exemplo: salvar usuário no localStorage
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+        // Aqui você pode redirecionar para outra página:
+        // window.location.href = "/dashboard";
+      }
+    } catch (error) {
+      console.error("Erro ao conectar com backend:", error);
+      setMessage("Erro ao conectar com o servidor.");
+    }
   };
 
   return (
@@ -49,9 +75,12 @@ const Login = () => {
           <a href="#">Esqueceu sua senha?</a>
         </div>
         <button type="submit">Login</button>
+
+        {message && <p style={{ marginTop: "10px" }}>{message}</p>}
+
         <div className="signup-link">
           <p>
-            Não tem uma conta? <a href="#">Registar</a>{" "}
+            Não tem uma conta? <a href="#">Registrar</a>
           </p>
         </div>
       </form>
