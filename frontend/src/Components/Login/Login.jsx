@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import "./Login.css";
+import { Link } from "react-router-dom";
+
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -80,7 +82,7 @@ const Login = () => {
 
         <div className="signup-link">
           <p>
-            Não tem uma conta? <a href="#">Registrar</a>
+            Não tem uma conta? <Link to="/register">Registrar</Link>
           </p>
         </div>
       </form>
