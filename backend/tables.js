@@ -1,6 +1,7 @@
 // backend/tables.js
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const bcrypt = require('bcryptjs');
 
 const dbPath = path.resolve(__dirname, 'sqlite/MeuBanco.db');
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -8,7 +9,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
   else console.log('Banco SQLite conectado!');
 });
 
-// Array com todas as tabelas do seu diagrama
+// Array com todas as tabelas
 const tabelas = [
   `CREATE TABLE IF NOT EXISTS TipoUsuario (
     id_tipo_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -81,32 +82,40 @@ const tabelas = [
   )`
 ];
 
-// Cria todas as tabelas automaticamente
-tabelas.forEach(sql => {
-  db.run(sql, (err) => {
-    if (err) console.error('Erro ao criar tabela:', err.message);
+// Garante execução em ordem
+db.serialize(() => {
+  tabelas.forEach(sql => {
+    db.run(sql, (err) => {
+      if (err) console.error('Erro ao criar tabela:', err.message);
+    });
+  });
+
+  console.log('Todas as tabelas foram criadas (se não existiam).');
+
+  // Inserir tipos de usuário padrão
+  db.run(
+    `INSERT OR IGNORE INTO TipoUsuario (id_tipo_usuario, tipo) VALUES 
+      (1, 'cliente'),
+      (2, 'administrador'),
+      (3, 'usuario')`
+  );
+
+  // Inserir usuário admin
+  const senhaPlano = "admin123";
+  const senhaHash = bcrypt.hashSync(senhaPlano, 10);
+
+  db.get("SELECT * FROM Usuario WHERE email = ?", ["admin@teste.com"], (err, row) => {
+    if (!row) {
+      db.run(
+        `INSERT INTO Usuario (nome, email, senha_hash, id_tipo_usuario) VALUES (?, ?, ?, ?)`,
+        ["Administrador", "admin@teste.com", senhaHash, 2],
+        (err) => {
+          if (err) console.error("Erro ao inserir usuário admin:", err.message);
+          else console.log("Usuário admin criado! Email: admin@teste.com | Senha: admin123");
+        }
+      );
+    }
   });
 });
 
-console.log('Todas as tabelas foram criadas (se não existiam).');
-
 module.exports = db;
-
-const bcrypt = require('bcryptjs');
-
-// Inserir usuário admin de teste se não existir
-const senhaPlano = "admin123"; // senha em texto
-const senhaHash = bcrypt.hashSync(senhaPlano, 10);
-
-db.get("SELECT * FROM Usuario WHERE email = ?", ["admin@teste.com"], (err, row) => {
-  if (!row) {
-    db.run(
-      `INSERT INTO Usuario (nome, email, senha_hash, id_tipo_usuario) VALUES (?, ?, ?, ?)`,
-      ["Administrador", "admin@teste.com", senhaHash, 2], // 2 = administrador (ajuste se precisar)
-      (err) => {
-        if (err) console.error("Erro ao inserir usuário admin:", err.message);
-        else console.log("Usuário admin criado! Email: admin@teste.com | Senha: admin123");
-      }
-    );
-  }
-});

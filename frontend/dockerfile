@@ -1,0 +1,46 @@
+# Etapa 1: Build com Node.js
+FROM node:20 AS build
+
+# Define diretório de trabalho
+WORKDIR /app
+
+# Copia arquivos de configuração primeiro (cache de dependências)
+COPY package*.json ./
+
+# Instala dependências
+RUN npm install
+
+# Copia o restante do código
+COPY . .
+
+# Build do projeto
+RUN npm run build
+
+# Etapa 2: Servir com Nginx
+FROM nginx:alpine
+
+# Remove configuração padrão do Nginx
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copia os arquivos buildados do Vite para a pasta do Nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expõe a porta 80
+EXPOSE 80
+
+# Inicia o Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+# Etapa de desenvolvimento
+FROM node:20
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
